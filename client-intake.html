@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhoennixAI — Client Consultation</title>
+  <meta name="description" content="Start your project with PhoennixAI — AI-powered app development agency, London.">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/500.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/500.css">
+  <style>
+    /* ── CONFIG NOTE ─────────────────────────────────────
+       For production, proxy the Anthropic API through a
+       backend (e.g. Supabase Edge Function or Next.js API route)
+       so your API key is never exposed client-side.
+       For dev/internal use, you may set it directly below.
+    ────────────────────────────────────────────────────── */
+
+    :root {
+      --bg0:#060C18; --bg1:#0A1626; --bg2:#0F1E33; --bg3:#152743;
+      --line:rgba(255,255,255,0.055); --line2:rgba(255,255,255,0.10);
+      --t1:#E0E9F2; --t2:#6A8299; --t3:#344F65;
+      --acc:#2EC8BE; --acc-bg:rgba(46,200,190,0.08); --acc-bd:rgba(46,200,190,0.22);
+      --ok:#22A86A; --ok-bg:rgba(34,168,106,0.09); --ok-bd:rgba(34,168,106,0.24);
+      --sans:'DM Sans',-apple-system,sans-serif;
+      --serif:'Cormorant Garamond',Georgia,serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg0);font-family:var(--sans);color:var(--t1)}
+    body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+
+    /* Page wrapper */
+    .page{width:100%;max-width:820px}
+    .top-line{height:1px;background:var(--acc);opacity:.5;border-radius:1px}
+    .frame{border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--bg0)}
+
+    /* NDA GATE */
+    .nda{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;min-height:580px}
+    .nda-logo{width:80px;height:80px;border-radius:50%;overflow:hidden;border:1px solid var(--acc-bd);margin-bottom:22px}
+    .nda-logo img{width:100%;height:100%;object-fit:cover}
+    .nda-title{font-family:var(--serif);font-size:28px;color:var(--t1);letter-spacing:.02em;margin-bottom:6px;text-align:center}
+    .nda-sub{font-size:11px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:36px;text-align:center}
+    .nda-card{width:100%;max-width:500px;border:1px solid var(--line2);border-radius:6px;padding:26px;background:var(--bg1)}
+    .nda-body{font-size:13px;color:var(--t2);line-height:1.78;margin-bottom:22px}
+    .nda-body strong{color:var(--t1);font-weight:500}
+    .divider{height:1px;background:var(--line);margin:20px 0}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+    .field{display:flex;flex-direction:column;gap:5px}
+    .lbl{font-size:10px;color:var(--t3);letter-spacing:.10em;text-transform:uppercase}
+    .inp{background:var(--bg2);border:1px solid var(--line2);border-radius:4px;padding:9px 13px;font-family:var(--sans);font-size:13px;color:var(--t1);outline:none;transition:border-color .2s;width:100%}
+    .inp::placeholder{color:var(--t3)}
+    .inp:focus{border-color:var(--acc-bd)}
+    .check-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:22px;cursor:pointer}
+    .checkbox{width:16px;height:16px;border:1px solid var(--line2);border-radius:2px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .checkbox.on{background:var(--acc);border-color:var(--acc)}
+    .check-txt{font-size:12px;color:var(--t2);line-height:1.65}
+    .check-txt strong{color:var(--t1);font-weight:500}
+    .go-btn{width:100%;padding:13px;background:var(--acc);border:none;border-radius:4px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--bg0);cursor:pointer;letter-spacing:.04em;transition:opacity .2s}
+    .go-btn:disabled{opacity:.3;cursor:default}
+    .go-btn:hover:not(:disabled){opacity:.85}
+    .nda-foot{font-size:11px;color:var(--t3);text-align:center;margin-top:16px;letter-spacing:.03em}
+
+    /* APP SHELL */
+    .app-shell{display:none;height:600px;overflow:hidden}
+    .slider{display:flex;flex-direction:column;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+    .chat-view{height:599px;display:flex;flex-shrink:0}
+
+    /* SIDEBAR */
+    .sb{width:200px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:20px 18px}
+    .sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+    .sb-img{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1px solid var(--acc-bd);flex-shrink:0}
+    .sb-img img{width:100%;height:100%;object-fit:cover}
+    .sb-wm{display:flex;flex-direction:column;gap:2px}
+    .sb-name{font-family:var(--serif);font-size:15px;color:var(--t1);letter-spacing:.02em;line-height:1}
+    .sb-tag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+    .sb-sec{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+    .sb-topic{display:flex;align-items:center;gap:9px;padding:6px 8px;font-size:12px;color:var(--t3);border-radius:3px;margin-bottom:1px;transition:all .2s}
+    .sb-topic.active{color:var(--t1);background:var(--bg3)}
+    .sb-topic.done{color:var(--acc)}
+    .sb-dot{width:5px;height:5px;border-radius:50%;border:1px solid var(--t3);flex-shrink:0;transition:all .2s}
+    .sb-topic.done .sb-dot{background:var(--acc);border-color:var(--acc)}
+    .sb-topic.active .sb-dot{border-color:var(--t2)}
+    .sb-client{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+    .sb-cl{font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+    .sb-cn{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-foot{padding-top:12px;border-top:1px solid var(--line);margin-top:10px}
+    .sb-pl{font-size:10px;color:var(--t3);letter-spacing:.05em;margin-bottom:7px}
+    .sb-track{height:1px;background:var(--line2)}
+    .sb-fill{height:100%;background:var(--acc);width:0%;transition:width .5s;opacity:.65}
+
+    /* CHAT */
+    .main{flex:1;display:flex;flex-direction:column;background:var(--bg0);min-width:0}
+    .hdr{padding:13px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .aria-row{display:flex;align-items:center;gap:9px}
+    .pulse{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2.8s ease-in-out infinite;flex-shrink:0}
+    @keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+    .aria-n{font-size:13px;font-weight:500;color:var(--t1)}
+    .aria-r{font-size:10px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}
+    .hbtn{font-size:11px;padding:5px 12px;border:1px solid var(--line2);border-radius:3px;background:none;color:var(--t3);cursor:pointer;letter-spacing:.04em;transition:all .2s}
+    .hbtn:hover{color:var(--t2);background:var(--bg2)}
+    .msgs{flex:1;overflow-y:auto;padding:24px 22px;display:flex;flex-direction:column;gap:20px;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+    .msgs::-webkit-scrollbar{width:3px}
+    .msgs::-webkit-scrollbar-thumb{background:var(--line2)}
+    .msg-ai{display:flex;gap:12px;align-items:flex-start;animation:fu .28s ease}
+    @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .av{width:28px;height:28px;border-radius:50%;overflow:hidden;border:1px solid var(--acc-bd);flex-shrink:0;margin-top:2px}
+    .av img{width:100%;height:100%;object-fit:cover}
+    .bub-ai{max-width:83%;padding:12px 16px;background:var(--bg1);border:1px solid var(--line);border-radius:2px 8px 8px 8px;font-size:13.5px;line-height:1.68;color:var(--t1)}
+    .msg-user{display:flex;justify-content:flex-end;animation:fu .28s ease}
+    .bub-user{max-width:72%;padding:10px 16px;border-left:2px solid var(--acc);background:var(--acc-bg);font-size:13.5px;line-height:1.68;color:var(--t1);border-radius:0 6px 6px 0}
+    .typing-inner{display:flex;gap:5px;align-items:center;padding:12px 16px}
+    @keyframes tb{0%,80%,100%{opacity:.15;transform:scale(.82)}40%{opacity:1;transform:scale(1)}}
+    .td{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:tb 1.3s infinite}
+    .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+    .izone{padding:13px 22px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+    .izone textarea{flex:1;resize:none;background:var(--bg2);border:1px solid var(--line2);border-radius:4px;padding:9px 14px;font-family:var(--sans);font-size:13.5px;color:var(--t1);line-height:1.5;outline:none;min-height:38px;max-height:100px;transition:border-color .2s}
+    .izone textarea::placeholder{color:var(--t3)}
+    .izone textarea:focus{border-color:var(--acc-bd)}
+    .sbtn{width:36px;height:36px;background:var(--acc);border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
+    .sbtn:disabled{opacity:.2;cursor:default}
+    .sbtn:hover:not(:disabled){opacity:.82}
+    .sbtn svg{width:14px;height:14px;fill:var(--bg0)}
+
+    /* COMPLETION */
+    .comp-view{height:599px;overflow-y:auto;background:var(--bg0);flex-shrink:0;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+    .comp-view::-webkit-scrollbar{width:3px}
+    .comp-inner{padding:30px 28px;display:flex;flex-direction:column;gap:20px}
+    .comp-hd{text-align:center;padding-bottom:12px;border-bottom:1px solid var(--line)}
+    .comp-tick{width:40px;height:40px;border:1px solid var(--ok-bd);border-radius:2px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+    .comp-title{font-family:var(--serif);font-size:24px;color:var(--t1);margin-bottom:5px;letter-spacing:.02em}
+    .comp-sub{font-size:12px;color:var(--t2);letter-spacing:.04em}
+    .sec-lbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+    .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .acard{border:1px solid var(--line2);background:var(--bg1);padding:14px 16px;cursor:pointer;transition:all .2s;border-radius:4px;text-align:left}
+    .acard:hover:not(.ok):not(.loading){border-color:var(--acc-bd);background:var(--bg2)}
+    .acard.ok{border-color:var(--ok-bd);background:var(--ok-bg);cursor:default;pointer-events:none}
+    .acard.loading{opacity:.4;pointer-events:none}
+    .aico{margin-bottom:8px}.aico svg{width:16px;height:16px;stroke:var(--t2);stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .acard.ok .aico svg{stroke:var(--ok)}
+    .atitle{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
+    .asub{font-size:11px;color:var(--t2)}
+    .acard.ok .atitle{color:var(--ok)}
+    .sbox{border:1px solid var(--line);border-radius:4px;overflow:hidden}
+    .srow{display:flex;gap:12px;padding:7px 14px;border-bottom:1px solid var(--line);font-size:12px}
+    .srow:last-child{border-bottom:none}
+    .skey{color:var(--t3);width:116px;flex-shrink:0}
+    .sval{color:var(--t2)}
+    .stline{font-size:11px;color:var(--t3);text-align:center;letter-spacing:.04em;min-height:16px}
+
+    /* Page footer */
+    .page-foot{text-align:center;margin-top:18px;font-size:11px;color:var(--t3);letter-spacing:.05em}
+    .page-foot a{color:var(--t3);text-decoration:none}
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="top-line"></div>
+  <div class="frame">
+
+    <!-- ── NDA / CONSENT GATE ── -->
+    <div class="nda" id="ndaScreen">
+      <div class="nda-logo">
+        <img src="data:image/jpeg;base64,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" alt="PhoennixAI">
+      </div>
+      <div class="nda-title">Client Consultation</div>
+      <div class="nda-sub">Powered by PhoennixAI</div>
+      <div class="nda-card">
+        <div class="nda-body">
+          Before we begin, please note that all information shared during this consultation is treated with the utmost confidentiality. <strong>PhoennixAI will not disclose, share, or use your project details for any purpose other than preparing your proposal.</strong>
+          <br><br>
+          Aria, our AI intake specialist, will guide you through a short conversation to capture your project vision. A member of our team will follow up within <strong>1–2 business days.</strong>
+        </div>
+        <div class="divider"></div>
+        <div class="row2">
+          <div class="field">
+            <label class="lbl">Your name</label>
+            <input class="inp" id="g-name" type="text" placeholder="Jane Smith" oninput="checkGate()">
+          </div>
+          <div class="field">
+            <label class="lbl">Work email</label>
+            <input class="inp" id="g-email" type="email" placeholder="jane@company.com" oninput="checkGate()">
+          </div>
+        </div>
+        <div class="check-row" onclick="toggleCheck()">
+          <div class="checkbox" id="ndaBox"></div>
+          <div class="check-txt">I understand that my project information will be kept <strong>strictly confidential</strong> by PhoennixAI and consent to this consultation.</div>
+        </div>
+        <button class="go-btn" id="goBtn" disabled onclick="begin()">Begin consultation &rarr;</button>
+      </div>
+      <div class="nda-foot">PhoennixAI &middot; phoennixai.com &middot; London, UK</div>
+    </div>
+
+    <!-- ── CHAT + COMPLETION SHELL ── -->
+    <div class="app-shell" id="appShell">
+      <div class="slider" id="slider">
+
+        <!-- Chat view -->
+        <div class="chat-view">
+          <div class="sb">
+            <div class="sb-logo">
+              <div class="sb-img">
+                <img src="data:image/jpeg;base64,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" alt="PhoennixAI">
+              </div>
+              <div class="sb-wm">
+                <div class="sb-name">PhoennixAI</div>
+                <div class="sb-tag">Client intake</div>
+              </div>
+            </div>
+            <div class="sb-sec">Topics</div>
+            <div class="sb-topic" data-t="contact"><span class="sb-dot"></span>Contact details</div>
+            <div class="sb-topic" data-t="vision"><span class="sb-dot"></span>App vision</div>
+            <div class="sb-topic" data-t="users"><span class="sb-dot"></span>Target users</div>
+            <div class="sb-topic" data-t="design"><span class="sb-dot"></span>Design &amp; brand</div>
+            <div class="sb-topic" data-t="tech"><span class="sb-dot"></span>Tech &amp; timeline</div>
+            <div class="sb-topic" data-t="budget"><span class="sb-dot"></span>Budget</div>
+            <div class="sb-client">
+              <div class="sb-cl">Session</div>
+              <div class="sb-cn" id="sbName">—</div>
+            </div>
+            <div class="sb-foot">
+              <div class="sb-pl" id="pLbl">0 of 6 covered</div>
+              <div class="sb-track"><div class="sb-fill" id="pFill"></div></div>
+            </div>
+          </div>
+
+          <div class="main">
+            <div class="hdr">
+              <div class="aria-row">
+                <div class="pulse"></div>
+                <div>
+                  <div class="aria-n">Aria</div>
+                  <div class="aria-r">Intake specialist &middot; PhoennixAI</div>
+                </div>
+              </div>
+              <button class="hbtn" onclick="resetAll()">New session</button>
+            </div>
+            <div class="msgs" id="msgs"></div>
+            <div class="izone">
+              <textarea id="inp" placeholder="Type your response..." rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+              <button class="sbtn" id="snd" onclick="send()">
+                <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completion view -->
+        <div class="comp-view">
+          <div class="comp-inner">
+            <div class="comp-hd">
+              <div class="comp-tick"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="comp-title">Brief complete</div>
+              <div class="comp-sub">All project details collected. Take the next steps below.</div>
+            </div>
+            <div>
+              <div class="sec-lbl">Actions</div>
+              <div class="act-grid">
+                <div class="acard" id="a-db" onclick="saveDB()">
+                  <div class="aico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+                  <div class="atitle">Save to Supabase</div><div class="asub" id="db-sub">Store in your database</div>
+                </div>
+                <div class="acard" id="a-em" onclick="doEmail()">
+                  <div class="aico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></div>
+                  <div class="atitle">Send notifications</div><div class="asub" id="em-sub">Email client + team</div>
+                </div>
+                <div class="acard" id="a-pdf" onclick="doPDF()">
+                  <div class="aico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                  <div class="atitle">Download PDF brief</div><div class="asub" id="pdf-sub">Formatted A4 document</div>
+                </div>
+                <div class="acard" id="a-js" onclick="doJSON()">
+                  <div class="aico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                  <div class="atitle">Export JSON</div><div class="asub" id="js-sub">Raw data for integrations</div>
+                </div>
+              </div>
+            </div>
+            <div><div class="sec-lbl">Summary</div><div class="sbox" id="sbox"></div></div>
+            <div class="stline" id="stline"></div>
+            <div style="text-align:center;padding-bottom:8px">
+              <button class="hbtn" onclick="backToChat()">Back to conversation</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="page-foot">&copy; 2025 PhoennixAI Ltd &middot; <a href="https://phoennixai.com">phoennixai.com</a> &middot; London, UK</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────
+// For production: proxy API calls through a backend endpoint
+// so your Anthropic API key is never exposed client-side.
+// e.g. replace the fetch URL below with '/api/chat' and
+// handle the Anthropic call server-side.
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages'; // or '/api/chat'
+const MODEL             = 'claude-sonnet-4-20250514';
+const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY      = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_TABLE    = 'client_intake';
+const NOTIFY_VALERIE    = 'valerie@phoennixai.com';
+const NOTIFY_DILPREET   = 'dilpreet@phoennixai.com';
+// ───────────────────────────────────────────────────────────────
+
+const SYS = `You are Aria, a warm and highly professional client intake specialist at PhoennixAI — a premium AI-powered app development agency based in London. You help potential clients articulate their vision with clarity and confidence.
+
+Collect ALL of the following through natural, flowing conversation. Ask at most 2 questions at once:
+1. Email address
+2. Company name + role/title
+3. What the app does — clear one or two sentence description
+4. Problem it solves and who experiences it
+5. App type: web app / mobile / desktop / AI-powered tool / admin dashboard
+6. Target users + estimated user count at launch
+7. Three must-have features
+8. Design mood/feel + existing brand assets?
+9. Launch timeline
+10. Budget: Under £5k / £5k–£15k / £15k–£30k / £30k+
+11. Funding stage: bootstrapped / pre-seed / seed / Series A+ / corporate
+12. How soon they want to decide
+13. Anything else (optional)
+
+Rules: Be warm, intelligent, never robotic. Acknowledge answers before moving on. Aim for 8–12 exchanges.
+When ALL info collected, write a warm closing line then output:
+<INTAKE_COMPLETE>{"name":"","email":"","company":"","role":"","appDescription":"","problemSolved":"","appType":"","targetUsers":"","estimatedUsers":"","mustHaveFeatures":["","",""],"designMood":"","hasBrand":"","timeline":"","budget":"","fundingStage":"","decisionTimeline":"","anythingElse":"","ndaSigned":true}</INTAKE_COMPLETE>`;
+
+const KW = {contact:['email'],vision:['app','build','problem','solve'],users:['user','customer','how many'],design:['design','brand','feel','look','style'],tech:['tech','integration','timeline','launch','when'],budget:['budget','fund','cost','£','money']};
+let hist=[],busy=false,iData=null,topicsDone=0,ndaChecked=false,gName='',gEmail='';
+const LOGO='data:image/jpeg;base64,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';
+
+function toggleCheck(){ndaChecked=!ndaChecked;const b=document.getElementById('ndaBox');b.classList.toggle('on',ndaChecked);b.innerHTML=ndaChecked?'<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="var(--bg0)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"></polyline></svg>':'';checkGate();}
+function checkGate(){gName=document.getElementById('g-name').value.trim();gEmail=document.getElementById('g-email').value.trim();document.getElementById('goBtn').disabled=!(gName.length>1&&gEmail.includes('@')&&ndaChecked);}
+function begin(){document.getElementById('ndaScreen').style.display='none';document.getElementById('appShell').style.display='block';document.getElementById('sbName').textContent=gName;init();}
+function scrollD(){const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight;}
+function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+function addAI(t){const m=document.getElementById('msgs');const r=document.createElement('div');r.className='msg-ai';r.innerHTML=`<div class="av"><img src="${LOGO}" alt="Aria"></div><div class="bub-ai">${t.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')}</div>`;m.appendChild(r);scrollD();}
+function addUser(t){const m=document.getElementById('msgs');const r=document.createElement('div');r.className='msg-user';r.innerHTML=`<div class="bub-user">${t.replace(/\n/g,'<br>')}</div>`;m.appendChild(r);scrollD();}
+function showTyping(){const m=document.getElementById('msgs');const r=document.createElement('div');r.id='tr';r.className='msg-ai';r.innerHTML=`<div class="av"><img src="${LOGO}" alt="Aria"></div><div class="bub-ai"><div class="typing-inner"><span class="td"></span><span class="td"></span><span class="td"></span></div></div>`;m.appendChild(r);scrollD();}
+function hideTyping(){const t=document.getElementById('tr');if(t)t.remove();}
+function tickTopics(txt){const lo=txt.toLowerCase();let c=0;Object.entries(KW).forEach(([k,ws])=>{const el=document.querySelector(`[data-t="${k}"]`);if(!el)return;if(ws.some(w=>lo.includes(w))&&!el.classList.contains('done'))el.classList.add('active');if(el.classList.contains('done'))c++;});topicsDone=Math.max(topicsDone,c);document.getElementById('pLbl').textContent=`${topicsDone} of 6 covered`;document.getElementById('pFill').style.width=`${Math.round(topicsDone/6*100)}%`;}
+function markAllDone(){document.querySelectorAll('.sb-topic').forEach(e=>{e.classList.add('done');e.classList.remove('active')});document.getElementById('pLbl').textContent='6 of 6 covered';document.getElementById('pFill').style.width='100%';topicsDone=6;}
+async function callAPI(userTxt){hist.push({role:'user',content:userTxt});const r=await fetch(ANTHROPIC_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:1000,system:SYS,messages:hist})});const d=await r.json();const rep=d.content?.[0]?.text||'Something went wrong.';hist.push({role:'assistant',content:rep});return rep;}
+async function send(){const inp=document.getElementById('inp');const txt=inp.value.trim();if(!txt||busy)return;inp.value='';inp.style.height='auto';document.getElementById('snd').disabled=true;busy=true;addUser(txt);tickTopics(txt);showTyping();try{const rep=await callAPI(txt);hideTyping();const m=rep.match(/<INTAKE_COMPLETE>([\s\S]*?)<\/INTAKE_COMPLETE>/);if(m){const clean=rep.replace(/<INTAKE_COMPLETE>[\s\S]*?<\/INTAKE_COMPLETE>/,'').trim();if(clean)addAI(clean);try{iData=JSON.parse(m[1].trim());markAllDone();setTimeout(showComp,700);}catch(e){addAI(clean||rep);}}else{addAI(rep);tickTopics(rep);}}catch(e){hideTyping();addAI('Connection error — please check your network and try again.');}busy=false;document.getElementById('snd').disabled=false;}
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function showComp(){document.getElementById('slider').style.transform='translateY(-600px)';if(!iData)return;const rows=[['Name',iData.name],['Email',iData.email],['Company',iData.company],['Role',iData.role],['App type',iData.appType],['Timeline',iData.timeline],['Budget',iData.budget],['Funding',iData.fundingStage],['Decision',iData.decisionTimeline],['NDA','Signed '+new Date().toLocaleDateString('en-GB')]];document.getElementById('sbox').innerHTML=rows.filter(([,v])=>v&&String(v).length>0).map(([k,v])=>`<div class="srow"><span class="skey">${k}</span><span class="sval">${v}</span></div>`).join('');}
+function backToChat(){document.getElementById('slider').style.transform='translateY(0)';}
+function resetAll(){hist=[];iData=null;topicsDone=0;busy=false;document.getElementById('msgs').innerHTML='';document.getElementById('slider').style.transform='translateY(0)';document.querySelectorAll('.sb-topic').forEach(e=>e.classList.remove('done','active'));document.getElementById('pFill').style.width='0%';document.getElementById('pLbl').textContent='0 of 6 covered';document.getElementById('stline').textContent='';['a-db','a-em','a-pdf','a-js'].forEach(id=>document.getElementById(id).classList.remove('ok','loading'));document.getElementById('db-sub').textContent='Store in your database';document.getElementById('em-sub').textContent='Email client + team';document.getElementById('pdf-sub').textContent='Formatted A4 document';document.getElementById('js-sub').textContent='Raw data for integrations';init();}
+async function saveDB(){if(!iData)return;const c=document.getElementById('a-db');if(SUPABASE_URL==='YOUR_SUPABASE_URL'){document.getElementById('stline').textContent='Add SUPABASE_URL and SUPABASE_KEY in the CONFIG block.';return;}c.classList.add('loading');document.getElementById('stline').textContent='Saving...';try{const r=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({...iData,submitted_at:new Date().toISOString()})});c.classList.remove('loading');if(r.ok||r.status===201){c.classList.add('ok');document.getElementById('db-sub').textContent='Saved';document.getElementById('stline').textContent='Saved to Supabase';}else document.getElementById('stline').textContent=`Supabase error ${r.status}`;}catch(e){c.classList.remove('loading');document.getElementById('stline').textContent=`Error: ${e.message}`;}}
+function doEmail(){if(!iData)return;const sub=`New project enquiry — ${iData.company||iData.name}`;const body=`New client brief — PhoennixAI\nNDA signed: Yes (${new Date().toLocaleDateString('en-GB')})\n\nClient: ${iData.name}\nEmail: ${iData.email}\nCompany: ${iData.company} — ${iData.role}\n\nApp: ${iData.appDescription}\nProblem: ${iData.problemSolved}\nType: ${iData.appType}\nUsers: ${iData.targetUsers} (~${iData.estimatedUsers})\n\nFeatures:\n${(iData.mustHaveFeatures||[]).map((f,i)=>`${i+1}. ${f}`).join('\n')}\n\nDesign: ${iData.designMood} | Brand: ${iData.hasBrand}\nTimeline: ${iData.timeline} | Budget: ${iData.budget}\nFunding: ${iData.fundingStage} | Decision: ${iData.decisionTimeline}`;window.open(`mailto:${[iData.email,NOTIFY_VALERIE,NOTIFY_DILPREET].join(',')}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`);const c=document.getElementById('a-em');c.classList.add('ok');document.getElementById('em-sub').textContent='Draft opened';}
+function doPDF(){if(!iData)return;if(typeof window.jspdf==='undefined'){document.getElementById('stline').textContent='Loading PDF...';setTimeout(doPDF,900);return;}const{jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});doc.setFillColor(6,12,24);doc.rect(0,0,210,30,'F');doc.setFillColor(46,200,190);doc.rect(0,0,210,1,'F');doc.setTextColor(224,233,242);doc.setFontSize(18);doc.setFont('helvetica','bold');doc.text('PhoennixAI',14,13);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(106,130,153);doc.text('Client Project Brief — Confidential',14,21);doc.text(`NDA signed ${new Date().toLocaleDateString('en-GB')}`,196,21,{align:'right'});doc.setTextColor(15,15,20);let y=40;const sec=(t)=>{doc.setFillColor(246,246,244);doc.rect(14,y-3,182,7,'F');doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(80,100,120);doc.text(t.toUpperCase(),16,y+1);y+=10;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20,20,30);};const row=(k,v)=>{if(!v||v==='')return;doc.setTextColor(120,140,160);doc.setFontSize(9);doc.text(k,16,y);doc.setTextColor(20,25,35);doc.setFontSize(10);const ls=doc.splitTextToSize(String(v),120);doc.text(ls,76,y);y+=Math.max(ls.length*6,7);};sec('Contact');row('Name',iData.name);row('Email',iData.email);row('Company',iData.company);row('Role',iData.role);y+=3;sec('Project vision');row('Description',iData.appDescription);row('Problem solved',iData.problemSolved);row('App type',iData.appType);y+=3;sec('Users & features');row('Target users',iData.targetUsers);row('Scale',iData.estimatedUsers);row('Must-have features',(iData.mustHaveFeatures||[]).join(' • '));y+=3;sec('Design & brand');row('Mood',iData.designMood);row('Brand assets',iData.hasBrand);y+=3;sec('Timeline & investment');row('Timeline',iData.timeline);row('Budget',iData.budget);row('Funding',iData.fundingStage);row('Decision',iData.decisionTimeline);if(iData.anythingElse&&iData.anythingElse.length>2){y+=3;sec('Notes');doc.setTextColor(20,25,35);doc.text(doc.splitTextToSize(iData.anythingElse,178),16,y);}doc.setDrawColor(46,200,190);doc.setLineWidth(0.3);doc.line(14,281,196,281);doc.setFontSize(8);doc.setTextColor(140,160,175);doc.text('PhoennixAI · phoennixai.com · Confidential',105,288,{align:'center'});doc.save(`PhoennixAI_Brief_${(iData.company||'Client').replace(/\s+/g,'_')}.pdf`);const c=document.getElementById('a-pdf');c.classList.add('ok');document.getElementById('pdf-sub').textContent='Downloaded';}
+function doJSON(){if(!iData)return;const b=new Blob([JSON.stringify({...iData,nda_signed_at:new Date().toISOString()},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`PhoennixAI_Client_${(iData.company||'Brief').replace(/\s+/g,'_')}.json`;a.click();document.getElementById('a-js').classList.add('ok');document.getElementById('js-sub').textContent='Downloaded';}
+async function init(){document.getElementById('snd').disabled=true;busy=true;showTyping();try{const firstMsg=`Hello, I'm ${gName} and I've agreed to the confidentiality terms. I'm interested in having an app built by PhoennixAI.`;const r=await fetch(ANTHROPIC_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:900,system:SYS,messages:[{role:'user',content:firstMsg}]})});const d=await r.json();const rep=d.content?.[0]?.text||`Welcome ${gName}. I'm Aria. Could you tell me a little about the app you have in mind?`;hist=[{role:'user',content:firstMsg},{role:'assistant',content:rep}];hideTyping();addAI(rep);}catch(e){hideTyping();addAI(`Welcome, ${gName}. I'm Aria — it's wonderful to meet you. Your project details are fully protected with us. To begin, could you tell me a little about what you're looking to build?`);}busy=false;document.getElementById('snd').disabled=false;}
+</script>
+</body>
+</html>
