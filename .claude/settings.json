@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)"
+    ],
+    "deny": []
+  },
+  "env": {
+    "GRAPHIFY_EMAIL": "phoenixdigitec3@gmail.com",
+    "CLAUDE_REMOTE_CONTROL": "enabled",
+    "CLAUDE_AUTO_CONNECT_EMAIL": "phoenixdigitec3@gmail.com"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/setup-remote-control.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
