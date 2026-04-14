@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhoennixAI — Client Consultation</title>
+  <title>PhoennixAI — Client Intake · Aria</title>
   <meta name="description" content="Start your project with PhoennixAI — AI-powered app development agency, London.">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/400.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5/500.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/400.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5/500.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
   <style>
     /* ── CONFIG NOTE ─────────────────────────────────────
        For production, proxy the Anthropic API through a
@@ -19,13 +17,19 @@
     ────────────────────────────────────────────────────── */
 
     :root {
-      --bg0:#060C18; --bg1:#0A1626; --bg2:#0F1E33; --bg3:#152743;
-      --line:rgba(255,255,255,0.055); --line2:rgba(255,255,255,0.10);
-      --t1:#E0E9F2; --t2:#6A8299; --t3:#344F65;
-      --acc:#2EC8BE; --acc-bg:rgba(46,200,190,0.08); --acc-bd:rgba(46,200,190,0.22);
+      /* PhoennixAI brand system */
+      --midnight:#060A18; --surface:#0D1220; --surface2:#111827; --surface3:#152237;
+      --fire:#FF6B2B; --electric:#00E5FF; --gold:#FFB830; --sapphire:#46ABD7; --royal:#215CAE;
+      --text:#E8E8E8; --text2:rgba(255,255,255,0.55); --text3:rgba(255,255,255,0.28);
+      /* Legacy aliases — keep existing code working */
+      --bg0:var(--midnight); --bg1:var(--surface); --bg2:var(--surface2); --bg3:var(--surface3);
+      --t1:var(--text); --t2:var(--text2); --t3:var(--text3);
+      --acc:var(--electric); --acc-bg:rgba(0,229,255,0.08); --acc-bd:rgba(0,229,255,0.22);
       --ok:#22A86A; --ok-bg:rgba(34,168,106,0.09); --ok-bd:rgba(34,168,106,0.24);
+      --line:rgba(255,255,255,0.06); --line2:rgba(255,255,255,0.12);
       --sans:'DM Sans',-apple-system,sans-serif;
       --serif:'Cormorant Garamond',Georgia,serif;
+      --display:'Bebas Neue',sans-serif;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;background:var(--bg0);font-family:var(--sans);color:var(--t1)}
@@ -40,7 +44,7 @@
     .nda{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;min-height:580px}
     .nda-logo{width:80px;height:80px;border-radius:50%;overflow:hidden;border:1px solid var(--acc-bd);margin-bottom:22px}
     .nda-logo img{width:100%;height:100%;object-fit:cover}
-    .nda-title{font-family:var(--serif);font-size:28px;color:var(--t1);letter-spacing:.02em;margin-bottom:6px;text-align:center}
+    .nda-title{font-family:var(--display),var(--serif);font-size:34px;color:var(--t1);letter-spacing:.06em;margin-bottom:6px;text-align:center}
     .nda-sub{font-size:11px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:36px;text-align:center}
     .nda-card{width:100%;max-width:500px;border:1px solid var(--line2);border-radius:6px;padding:26px;background:var(--bg1)}
     .nda-body{font-size:13px;color:var(--t2);line-height:1.78;margin-bottom:22px}
@@ -57,7 +61,7 @@
     .checkbox.on{background:var(--acc);border-color:var(--acc)}
     .check-txt{font-size:12px;color:var(--t2);line-height:1.65}
     .check-txt strong{color:var(--t1);font-weight:500}
-    .go-btn{width:100%;padding:13px;background:var(--acc);border:none;border-radius:4px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--bg0);cursor:pointer;letter-spacing:.04em;transition:opacity .2s}
+    .go-btn{width:100%;padding:14px;background:var(--fire);border:none;border-radius:4px;font-family:var(--display),var(--sans);font-size:17px;font-weight:500;letter-spacing:.08em;color:#fff;cursor:pointer;transition:opacity .2s}
     .go-btn:disabled{opacity:.3;cursor:default}
     .go-btn:hover:not(:disabled){opacity:.85}
     .nda-foot{font-size:11px;color:var(--t3);text-align:center;margin-top:16px;letter-spacing:.03em}
@@ -288,7 +292,7 @@
     </div>
 
   </div>
-  <div class="page-foot">&copy; 2025 PhoennixAI Ltd &middot; <a href="https://phoennixai.com">phoennixai.com</a> &middot; London, UK</div>
+  <div class="page-foot">&copy; 2026 PhoennixAI Ltd &middot; <a href="https://phoennixai.com">phoennixai.com</a> &middot; London, UK</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -298,7 +302,7 @@
 // so your Anthropic API key is never exposed client-side.
 // e.g. replace the fetch URL below with '/api/chat' and
 // handle the Anthropic call server-side.
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages'; // or '/api/chat'
+const ANTHROPIC_API_URL = '/api/chat'; // Vercel Edge Function — ANTHROPIC_API_KEY in Vercel env
 const MODEL             = 'claude-sonnet-4-20250514';
 const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
 const SUPABASE_KEY      = 'YOUR_SUPABASE_ANON_KEY';
