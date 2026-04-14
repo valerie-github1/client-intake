@@ -1,169 +1,201 @@
-# CLAUDE.md — PhoennixAI · client-intake
-> Claude Code reads this file every session. Do not delete. Last updated: 2026-04-13.
+# CLAUDE.md — PhoennixAI Master Directive
+> Claude Code permanent memory. Read this every session. Do not delete or rename.
+> Version: v3 | April 2026
 
 ---
 
-## 01 · Brand
+## 01 · Company
 
-| | |
-|---|---|
-| **Brand name** | PhoennixAI |
-| **Tagline** | AI-powered app development agency |
-| **Location** | London, UK |
-| **Website** | phoennixai.com |
-| **Tone** | Warm, intelligent, premium — never robotic |
+**PhoennixAI** (double-n) — the world's first AI-powered Business Operating System (BOS) for solo founders.
+Replaces 6–12 tools with one command centre staffed by 22 AI agents.
 
-### Colours
-```
---bg0:       #060C18   (deepest background)
---bg1:       #0A1626
---bg2:       #0F1E33
---bg3:       #152743
---acc:       #2EC8BE   (teal — primary action)
---ok:        #22A86A   (green — success)
---t1:        #E0E9F2   (primary text)
---t2:        #6A8299   (secondary text)
---t3:        #344F65   (muted / labels)
-```
+**CEO & Founder:** Valerie Wilcox — valerie@phoennixai.com
+**CTO:** Dilpreet — dilpreet@phoennixai.com
+**Remote control:** phoenixdigitec3@gmail.com
+**Location:** London, UK
 
-### Typography
-- **Display / headings:** `Cormorant Garamond` (serif, elegant)
-- **Body / UI:** `DM Sans` (sans-serif, clean)
+**Three brands:**
+- PhoennixAI — Mission Control BOS (phoennixai.com)
+- Phantom Gaming Studio — AI-native game dev studio
+- Cupcakes & Cocktails — artisan lifestyle & events brand
 
 ---
 
-## 02 · Project — client-intake
-
-**What it is:** An AI-powered client consultation form. The AI character "Aria" (an Anthropic Claude model) guides potential clients through a structured intake process, collecting full project briefs.
-
-**Key flows:**
-1. NDA / consent gate (name + email + checkbox)
-2. Multi-topic chat with Aria (6 topics: contact, vision, users, design, tech, budget)
-3. Completion screen: Save to Supabase · Email team · Download PDF · Export JSON
-
-**File:** Single-page `index.html` (HTML + CSS + vanilla JS — no build step required)
-
----
-
-## 03 · Stack
+## 02 · Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Runtime | Vanilla HTML / CSS / JavaScript (ES modules) |
-| AI model | `claude-sonnet-4-20250514` via Anthropic Messages API |
-| Database | Supabase (PostgreSQL) |
-| PDF | jsPDF 2.5.1 (CDN) |
-| Fonts | @fontsource via jsDelivr CDN |
-| Deployment | GitHub Pages / Vercel |
+| BOS frontend | Vanilla HTML / CSS / JS (no build step) |
+| Holographic dashboard | React 18 + Three.js + TypeScript + Vite |
+| Client intake | Vanilla HTML + Anthropic API + jsPDF |
+| AI model (Aria) | claude-sonnet-4-20250514 |
+| Database | Supabase (PostgreSQL + Edge Functions) |
+| Deployment | Vercel (primary) + GitHub Pages (static) |
+| Knowledge graph | graphify (graphifyy 0.4.8) |
+| Remote control | graphify + Claude Code hooks |
 
 ---
 
-## 04 · GitHub
+## 03 · Design System — Dark Hologram Mode (default)
+
+```css
+--midnight  : #060A18   /* deep background */
+--fire      : #FF6B2B   /* primary CTA / brand orange */
+--electric  : #00E5FF   /* cyan / links / accents */
+--gold      : #FFB830   /* highlights / premium */
+--sapphire  : #46ABD7   /* secondary blue */
+--royal     : #215CAE   /* deep blue */
+--surface   : #0D1220   /* card backgrounds */
+--text      : #E8E8E8   /* primary text */
+--text2     : rgba(255,255,255,0.55)
+--text3     : rgba(255,255,255,0.28)
+```
+
+**Always use CSS vars — never raw hex in code.**
+
+---
+
+## 04 · Design System — Frost White Light Mode
+
+```css
+--bg        : #FAFBFF   /* page background */
+--surface   : #FFFFFF   /* card / panel */
+--border    : #E2E8F0   /* subtle dividers */
+--text      : #0F172A   /* primary text */
+--text2     : #475569   /* secondary */
+--text3     : #94A3B8   /* muted */
+--fire      : #FF6B2B   /* CTA unchanged */
+--electric  : #0284C7   /* adapted for light */
+--gold      : #D97706   /* adapted for light */
+```
+
+---
+
+## 05 · Typography
 
 ```
-Org / owner : valerie-github1
-Repo        : client-intake
-Main branch : main
-Dev branch  : claude/setup-remote-control-qpnp8
-Pages URL   : https://valerie-github1.github.io/client-intake/
+Bebas Neue           → display / headlines
+DM Sans              → body / UI (primary)
+Playfair Display     → serif accent / italic quotes
+DM Mono              → code / data / labels
+Cormorant Garamond   → elegant headers (Phantom Gaming, C&C)
+Rajdhani             → holographic dashboard HUD
 ```
 
-### Push workflow (3 commands)
+---
+
+## 06 · Brand Voice Rules
+
+Apply to ALL copy — emails, UI, docs, social, everything.
+
+1. Short sentences. Always.
+2. Banned words: leverage, utilise, synergy, robust, seamless, cutting-edge, innovative
+3. Speak to ONE founder. Never "founders" (plural) in body copy.
+4. Cut hedging: "might", "could possibly", "you may want to"
+5. Never open with "I hope this email finds you well"
+6. Structure: Pain → Transformation → One clear action
+7. Aria = warm, curious. Valerie = decisive, direct.
+8. One CTA per message. Never three.
+
+---
+
+## 07 · All Repos — valerie-github1
+
+| Repo | Visibility | Status | URL |
+|---|---|---|---|
+| `client-intake` | PUBLIC | LIVE | client-intake-bay.vercel.app |
+| `phoennixai-mission-control` | PUBLIC | deployed | phoennixai-mission-control.vercel.app |
+| `phoennixai-holographic-dashboard` | PUBLIC | built | deploy via Vercel |
+| `phantom-gaming-studio` | PUBLIC | LIVE | valerie-github1.github.io/phantom-gaming-studio/ |
+| `cupcakes-and-cocktails` | PUBLIC | LIVE | valerie-github1.github.io/cupcakes-and-cocktails/ |
+| `phoennixai-agency-backend` | PRIVATE | active | — |
+| `phoennixai-agency-website` | PRIVATE | active | — |
+| `wilcoxdesigns-website` | PRIVATE | active | — |
+
+**GitHub account:** valerie-github1
+**Dev branch:** claude/setup-remote-control-qpnp8
+
+---
+
+## 08 · Plugins & Skills Installed
+
+```
+graphify     → knowledge graph (pip3 install graphifyy → graphify install → graphify claude install)
+vercel       → 25 deploy skills (npx plugins add vercel/vercel-plugin)
+obra/superpowers → 14 skills (brainstorming, subagent dev, systematic debugging, etc.)
+```
+
+**MCP servers active:**
+```
+github    → @modelcontextprotocol/server-github (GITHUB_TOKEN)
+supabase  → @supabase/mcp-server-supabase (SUPABASE_ACCESS_TOKEN)
+composio  → composio-mcp (COMPOSIO_API_KEY)
+graphify  → graphify . --mcp
+```
+
+**Hooks active:**
+```
+PreToolUse  (Glob/Grep)  → read graphify-out/GRAPH_REPORT.md first
+PostToolUse (Write/Edit) → auto-rebuild knowledge graph
+SessionStart             → remote control setup
+```
+
+---
+
+## 09 · Beta Programme
+
+```
+Programme  : PhoennixAI Beta
+Model      : Invite-only, NDA signed at intake
+Cohort     : 50–100 solo founders
+Duration   : 8 weeks
+Goal       : 30%+ conversion to paid on public launch
+```
+
+**Before any beta/MOS/email/copy task → read `BETA_LAUNCH_PROMPT.txt`**
+
+---
+
+## 10 · Marketing OS (MOS)
+
+Agents: SIGNAL · SCRIBE · ARIA · PROBE · RELAY
+
+Capabilities: brand voice calibration, email sequences, social posts, content calendar (30-day), launch kit.
+
+---
+
+## 11 · Claw Code — New Project Directive
+
+Every new PhoennixAI project:
 ```bash
-git add -p                                    # stage changes
-git commit -m "feat: <description>"
-git push -u origin claude/setup-remote-control-qpnp8
+claw install --claude
+graphify claude install
 ```
 
 ---
 
-## 05 · Supabase
+## 12 · graphify
 
-```
-Project URL  : YOUR_SUPABASE_URL      ← replace in index.html CONFIG block
-Anon key     : YOUR_SUPABASE_ANON_KEY ← replace in index.html CONFIG block
-Table        : client_intake
-```
+This project has a graphify knowledge graph at graphify-out/.
 
-### Schema (client_intake table)
-```sql
-create table client_intake (
-  id               uuid primary key default gen_random_uuid(),
-  submitted_at     timestamptz default now(),
-  name             text,
-  email            text,
-  company          text,
-  role             text,
-  app_description  text,
-  problem_solved   text,
-  app_type         text,
-  target_users     text,
-  estimated_users  text,
-  must_have_features text[],
-  design_mood      text,
-  has_brand        text,
-  timeline         text,
-  budget           text,
-  funding_stage    text,
-  decision_timeline text,
-  anything_else    text,
-  nda_signed       boolean default true
-);
-```
+Rules:
+- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
+- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
+- After modifying code files in this session, run `python3 -c "from graphify.watch import _rebuild_code; from pathlib import Path; _rebuild_code(Path('.'))"` to keep the graph current
 
 ---
 
-## 06 · Vercel
+## 13 · Non-Negotiable Rules
 
-```
-Project name  : client-intake
-Framework     : Other (static)
-Output dir    : . (root)
-Build command : (none — static HTML)
-Domain        : phoennixai.com  (or .vercel.app subdomain)
-Env vars      : (none — API key proxied via Edge Function for production)
-```
-
-> IMPORTANT: For production, proxy `https://api.anthropic.com/v1/messages` through
-> a Supabase Edge Function or Vercel API route so the Anthropic key is never
-> exposed client-side. In `index.html`, change `ANTHROPIC_API_URL` to `'/api/chat'`.
-
----
-
-## 07 · Contacts & Email
-
-| Role | Email |
-|---|---|
-| Owner / Ops | valerie@phoennixai.com |
-| Tech / Dev | dilpreet@phoennixai.com |
-| Remote Control | phoenixdigitec3@gmail.com |
-
-Intake form sends `mailto:` to: `client email + valerie@phoennixai.com + dilpreet@phoennixai.com`
-
----
-
-## 08 · Claude Remote Control
-
-```
-Auto-connect email : phoenixdigitec3@gmail.com
-Setup script       : .claude/setup-remote-control.sh
-SessionStart hook  : .claude/settings.json
-```
-
-```bash
-# Run once to install (or auto-runs on SessionStart)
-bash .claude/setup-remote-control.sh
-```
-
----
-
-## 09 · Rules for Claude Code
-
-1. **Never expose API keys** — Anthropic key must only live server-side in production
-2. **Match brand CSS variables** — always use `--acc`, `--bg0..3`, `--t1..3` etc.
-3. **Preserve the NDA gate** — do not remove or weaken the consent step
-4. **Single-file principle** — keep intake form as one `index.html` unless explicitly asked to split
-5. **Aria's voice** — warm, professional, never robotic; never change her system prompt without permission
-6. **Supabase writes** — always check `SUPABASE_URL !== 'YOUR_SUPABASE_URL'` before calling Supabase
-7. **Commit to dev branch** first (`claude/setup-remote-control-qpnp8`), never force-push to `main`
-8. **graphify** — run `/graphify .` after major code changes to rebuild the knowledge graph
+1. Read this file first, every session.
+2. Before any beta/MOS/email/copy task → read `BETA_LAUNCH_PROMPT.txt`
+3. Before any design task → check `PhoennixAI_BrandGuidelines.html`
+4. Apply brand voice rules to ALL copy without exception
+5. Never hardcode tokens/keys in files pushed to GitHub — use env var refs
+6. Always use CSS vars (--fire, --electric, etc.), never raw hex
+7. Commit to dev branch first, never force-push main
+8. Run `graphify claude install` on every new project
+9. One CTA per email/page section. Never three.
+10. Valerie is the decision-maker. When in doubt, ask her.
+11. Company name is PhoennixAI — double-n. Never "PhoenixAI".
+12. Never deploy secrets. Use ${ENV_VAR} refs in repo files.
