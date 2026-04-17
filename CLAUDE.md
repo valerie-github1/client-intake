@@ -199,3 +199,14 @@ Rules:
 10. Valerie is the decision-maker. When in doubt, ask her.
 11. Company name is PhoennixAI — double-n. Never "PhoenixAI".
 12. Never deploy secrets. Use ${ENV_VAR} refs in repo files.
+
+For graphify usage, graph structure guidance, and the canonical graph update command, see `## 12 · graphify` above.
+
+## graphify
+
+This project has a graphify knowledge graph at graphify-out/.
+
+Rules:
+- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
+- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
+- After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)
